@@ -14,7 +14,7 @@ dependencies = ["numpy>=1.21", "torch>=2.1", "onnx>=1.14"]
 test = ["pytest>=7", "onnxruntime>=1.16"]
 
 [project.urls]
-Repository = "https://github.com/josoriom/deep-warp"
+Repository = "https://github.com/josoriom/deepwarp"
 
 [tool.setuptools.packages.find]
 where = ["src"]

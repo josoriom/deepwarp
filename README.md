@@ -52,6 +52,27 @@ model = training.finish()
 | `reference_from_labels` | True | the reference rt of each target is the median of its labels in the training samples |
 | `device` | "" | "" picks cuda, then mps, then cpu |
 
+## Inputs, outputs and keys
+
+Any ONNX model with these works in Quant·ion's `load_warp`. `deepwarp.export_onnx` writes one.
+
+| | name | shape | holds |
+|---|---|---|---|
+| input | `eics` | rows × (1 + points) | per row: an m/z, then its trace. Target rows first, then `context_mz` rows |
+| input | `targets` | n × 2 | m/z and reference rt of each target |
+| output | `rt` | n × 1 | predicted rt |
+| output | `uncertainty` | n × 1 | uncertainty of each rt |
+| output | `context_found` | 1 | how many `context_mz` were found |
+
+| key | holds |
+|---|---|
+| `points` | points per trace |
+| `time_from`, `time_to` | time range of the traces |
+| `context_mz` | background m/z the model always reads |
+| `eic_ppm`, `eic_mz_tolerance` | m/z tolerance of the traces |
+
+Times are in minutes and values are float32. The model needs ONNX opset 13 or newer.
+
 ## Architecture
 
 `DeepWarp` joins five parts, each its own module and each usable on its own: `Encoder`, `Warp`, `TraceWindow`, `Correction` (with `IsomerAttention` and the order projection) and `Uncertainty`.
